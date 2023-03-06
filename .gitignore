@@ -3,7 +3,7 @@
 
 # 許可
 !/README.md
-!/prog/**
+!/prog/*
 !/.gitignore
 
 # 禁止
