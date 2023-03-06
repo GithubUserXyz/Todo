@@ -1,0 +1,10 @@
+# created by virtualenv automatically
+*
+
+# 許可
+!/README.md
+!/prog/**
+!/.gitignore
+
+# 禁止
+__pycache__
