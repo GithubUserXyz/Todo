@@ -2,8 +2,9 @@
 *
 
 # 許可
+!/prog/
+!/prog/**
 !/README.md
-!/prog/*
 !/.gitignore
 
 # 禁止
