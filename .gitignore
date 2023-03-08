@@ -5,6 +5,7 @@
 !/prog/
 !/prog/**
 !/README.md
+!/requirements.txt
 !/.gitignore
 
 # 禁止

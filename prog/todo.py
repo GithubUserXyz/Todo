@@ -1,6 +1,7 @@
-from flask import Flask
+from flask import Flask, jsonify
 
 app = Flask(__name__)
+app.config["JSON_AS_ASCII"] = False
 
 @app.route("/")
 def root():
@@ -12,7 +13,8 @@ def about():
 
 @app.get("/todo")
 def todo_get():
-    return "<h1>get item</h1>"
+    # 200 OKステータスコードと一書に返答
+    return jsonify({"title":"todo title"}), 200
 
 @app.post("/todo")
 def todo_post():

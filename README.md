@@ -1,3 +1,9 @@
+# 依存関係のインストール
+
+```
+pip install -r requirements.txt
+```
+
 # 実行
 
 ```
