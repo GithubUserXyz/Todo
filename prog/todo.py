@@ -1,7 +1,16 @@
 from flask import Flask, jsonify
+from flask_sqlalchemy import SQLAlchemy
 
+db = SQLAlchemy()
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///todo.db"
+db.init_app(app)
+
+class Todo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title  = db.Column(db.String, nullable=False)
+    description = db.Column(db.String)
 
 @app.route("/")
 def root():
