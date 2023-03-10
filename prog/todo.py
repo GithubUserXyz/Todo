@@ -27,7 +27,11 @@ def todo_get():
 
 @app.post("/todo")
 def todo_post():
-    return "<h1>post item</h1>"
+    return jsonify({
+        "id":1,
+        "title":"todo title",
+        "description":"todo description"
+        }), 200
 
 @app.put("/todo")
 def todo_put():
