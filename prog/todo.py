@@ -66,6 +66,14 @@ def todo_post():
 def todo_put():
     return "<h1>put item</h1>"
 
-@app.delete("/api/todos")
-def todo_delete():
-    return "<h1>delete item</h1>"
+
+###############################################################
+# todoを削除
+#
+@app.delete("/api/todos/<int:id>")
+def todo_delete(id):
+    todo = db.get_or_404(Todo, id)
+
+    db.session.delete(todo)
+    db.session.commit()
+    return "", 200
