@@ -62,16 +62,31 @@ def todo_post():
         "description":todo.description
         }), 200
 
-@app.put("/api/todos")
-def todo_put():
-    return "<h1>put item</h1>"
+###############################################################
+# todoを変更
+#
+@app.put("/api/todos/<int:id>")
+def todo_put_(id):
+    todo = db.get_or_404(Todo, id)
 
+    todo.title = request.json["title"]
+    todo.description = request.json["description"]
+
+    todo.verified = True
+    db.session.commit()
+    return jsonify(
+        {
+        "id":todo.id,
+        "title":todo.title,
+        "description":todo.description
+        }
+    ), 200
 
 ###############################################################
 # todoを削除
 #
 @app.delete("/api/todos/<int:id>")
-def todo_delete(id):
+def todo_delete_(id):
     todo = db.get_or_404(Todo, id)
 
     db.session.delete(todo)
