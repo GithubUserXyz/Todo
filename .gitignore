@@ -7,6 +7,9 @@
 !/README.md
 !/requirements.txt
 !/.gitignore
+!/orange/
+!/orange/lib/
+!/orange/lib/**
 
 # 禁止
 __pycache__
