@@ -32,13 +32,19 @@ class MyApp extends StatelessWidget {
               icon: const Icon(Icons.arrow_forward),
             ),
             IconButton(
-              onPressed: () {}, 
+              onPressed: () {},
               icon: const Icon(Icons.favorite),
             ),
             IconButton(
-              onPressed: () {}, 
+              onPressed: () {},
               icon: const Icon(Icons.more_vert),
-              ),
+            ),
+          ],
+        ),
+        body: ListView(
+          children: const <Widget>[
+            Text('Orange'),
+            Text('Apple'),
           ],
         ),
       ),
