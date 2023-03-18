@@ -86,15 +86,18 @@ class _MyListPageState extends State<MyListPage> {
         body: ListView.builder(
           itemCount: todo_items.length,
           itemBuilder: (BuildContext context, int index) {
-            return Text(todo_items[index]['title']);
+            return Card(
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    title: Text(todo_items[index]['title']),
+                    subtitle: Text(todo_items[index]['description']),
+                  )
+                ],
+              ),
+            );
           },
         ),
-        /*body: ListView(
-          children: const <Widget>[
-            Text('Orange'),
-            Text('Apple'),
-          ],
-        ),*/
       ),
     );
   }
