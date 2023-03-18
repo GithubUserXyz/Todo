@@ -39,3 +39,13 @@ orangeディレクトリに移動して次を実行。
 ```
 flutter run
 ```
+
+実行中にvを入力するとDevToolsというウェブブラウザを使った
+デバッグツールが表示される。logはloggingタブから確認できる。
+
+Error: Not found: 'package:http/http.dart'
+のエラーがでた場合は以下を実行。
+
+```
+flutter packages get
+```

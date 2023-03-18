@@ -1,6 +1,7 @@
 import logging
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 
 db = SQLAlchemy()
 app = Flask(__name__)
@@ -8,6 +9,9 @@ app.config["JSON_AS_ASCII"] = False
 # data base
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///todo.db"
 db.init_app(app)
+# cors
+# flutter側のError: XMLHttpRequest error.対策。
+CORS(app)
 # logging
 logging.basicConfig(level=logging.DEBUG)
 

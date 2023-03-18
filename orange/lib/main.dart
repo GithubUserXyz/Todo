@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
 void main() {
@@ -23,6 +27,26 @@ class MyListPage extends StatefulWidget {
 }
 
 class _MyListPageState extends State<MyListPage> {
+  List todo_items = [];
+
+  Future<void> getTodo() async {
+    log('getTodo()');
+    var response = await http.get(Uri.http('127.0.0.1:5000', 'api/todos'));
+    var jsonRes = jsonDecode(response.body);
+    log(jsonRes.toString());
+    setState(() {
+      todo_items = jsonRes;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    log("initState");
+    getTodo();
+    log(todo_items.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -59,12 +83,18 @@ class _MyListPageState extends State<MyListPage> {
             ),
           ],
         ),
-        body: ListView(
+        body: ListView.builder(
+          itemCount: todo_items.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Text(todo_items[index]['title']);
+          },
+        ),
+        /*body: ListView(
           children: const <Widget>[
             Text('Orange'),
             Text('Apple'),
           ],
-        ),
+        ),*/
       ),
     );
   }
