@@ -98,6 +98,69 @@ class _MyListPageState extends State<MyListPage> {
             );
           },
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) {
+                return MyTodoAddPage();
+              }),
+            );
+          },
+          child: Icon(Icons.add),
+        ),
+      ),
+    );
+  }
+}
+
+class MyTodoAddPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Todo 追加'),
+      ),
+      body: Container(
+        // まわりに余白を追加
+        padding: EdgeInsets.all(8),
+        // todo post用のテキストフィールド
+        child: Column(
+          children: <Widget>[
+            // title入力用のテキストフィールド
+            TextField(),
+            // 余白
+            const SizedBox(height: 8),
+            // description入力用のテキストフィールド
+            TextField(),
+            // 余白
+            const SizedBox(height: 8),
+            // todo追加用のボタン
+            // 'Todo 追加'と表示されて、押下するとtodo postを実行する
+            Container(
+              // 横に広げる
+              width: double.infinity,
+              // ボタンの実装(todo postの実行)
+              child: ElevatedButton(
+                onPressed: () {},
+                child: Text('Todo 追加', style: TextStyle(color: Colors.white)),
+              ),
+            ),
+            // 余白
+            const SizedBox(height: 8),
+            // 前の画面に戻るボタン 'キャンセル'と表示
+            Container(
+              // 横に広げる
+              width: double.infinity,
+              // ボタンの実装(キャンセル処理、前の画面に戻る)
+              child: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('キャンセル'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
