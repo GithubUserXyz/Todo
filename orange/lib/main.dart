@@ -29,6 +29,7 @@ class MyListPage extends StatefulWidget {
 class _MyListPageState extends State<MyListPage> {
   List todo_items = [];
 
+  // todoリストを取得してtodo_itemsに格納するメソッド
   Future<void> getTodo() async {
     log('getTodo()');
     var response = await http.get(Uri.http('127.0.0.1:5000', 'api/todos'));
@@ -39,6 +40,19 @@ class _MyListPageState extends State<MyListPage> {
     });
   }
 
+  // todo追加するページを表示する
+  Future<void> _navigateAndDisplayTodoAddPage(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MyTodoAddPage()),
+    );
+
+    if (!mounted) return;
+
+    log(result);
+  }
+
+  // 初期化処理
   @override
   void initState() {
     super.initState();
@@ -100,11 +114,7 @@ class _MyListPageState extends State<MyListPage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) {
-                return MyTodoAddPage();
-              }),
-            );
+            _navigateAndDisplayTodoAddPage(context);
           },
           child: Icon(Icons.add),
         ),
@@ -114,6 +124,11 @@ class _MyListPageState extends State<MyListPage> {
 }
 
 class MyTodoAddPage extends StatelessWidget {
+  String title = "";
+  String description = "";
+
+  MyTodoAddPage({Key? key}) : super(key: key) {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,11 +142,19 @@ class MyTodoAddPage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             // title入力用のテキストフィールド
-            TextField(),
+            TextField(
+              onChanged: (text) {
+                title = text;
+              },
+            ),
             // 余白
             const SizedBox(height: 8),
             // description入力用のテキストフィールド
-            TextField(),
+            TextField(
+              onChanged: (text) {
+                description = text;
+              },
+            ),
             // 余白
             const SizedBox(height: 8),
             // todo追加用のボタン
@@ -141,7 +164,10 @@ class MyTodoAddPage extends StatelessWidget {
               width: double.infinity,
               // ボタンの実装(todo postの実行)
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  log(title);
+                  log(description);
+                },
                 child: Text('Todo 追加', style: TextStyle(color: Colors.white)),
               ),
             ),
@@ -154,7 +180,8 @@ class MyTodoAddPage extends StatelessWidget {
               // ボタンの実装(キャンセル処理、前の画面に戻る)
               child: TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  //Navigator.of(context).pop();
+                  Navigator.pop(context, '');
                 },
                 child: Text('キャンセル'),
               ),
