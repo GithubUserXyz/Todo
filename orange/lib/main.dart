@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      //theme: ThemeData(fontFamily: 'NotoSansJP'),
       home: MyListPage(),
     );
   }
@@ -33,7 +34,8 @@ class _MyListPageState extends State<MyListPage> {
   Future<void> getTodo() async {
     log('getTodo()');
     var response = await http.get(Uri.http('127.0.0.1:5000', 'api/todos'));
-    var jsonRes = jsonDecode(response.body);
+    // utf8は文字化け対策
+    var jsonRes = jsonDecode(utf8.decode(response.bodyBytes));
     log(jsonRes.toString());
     setState(() {
       todo_items = jsonRes;
@@ -50,6 +52,8 @@ class _MyListPageState extends State<MyListPage> {
     if (!mounted) return;
 
     log(result);
+    // 再描画
+    getTodo();
   }
 
   // 初期化処理
@@ -129,6 +133,29 @@ class MyTodoAddPage extends StatelessWidget {
 
   MyTodoAddPage({Key? key}) : super(key: key) {}
 
+  // todoをpostするメソッド
+  Future<void> postTodo() async {
+    log('postTodo()');
+    Map<String, String> headers = {'content-type': 'application/json'};
+    var body = jsonEncode({'title': title, 'description': description});
+    final response = await http.post(
+      Uri.http('127.0.0.1:5000', 'api/todos'),
+      headers: headers,
+      body: body,
+    );
+
+    //if (!mounted) return;
+    var jsonRes = jsonDecode(response.body);
+    log(jsonRes.toString());
+    /*setState(() {
+      todo_items = jsonRes;
+    });*/
+    if (response.statusCode == 200) {
+    } else {
+      throw Exception('Failed to create Todo');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,6 +194,10 @@ class MyTodoAddPage extends StatelessWidget {
                 onPressed: () {
                   log(title);
                   log(description);
+                  // postの実行
+                  postTodo();
+                  // 成功であれば戻る
+                  Navigator.pop(context, '');
                 },
                 child: Text('Todo 追加', style: TextStyle(color: Colors.white)),
               ),
