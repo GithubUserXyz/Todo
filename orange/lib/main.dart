@@ -127,29 +127,39 @@ class _MyListPageState extends State<MyListPage> {
   }
 }
 
-class MyTodoAddPage extends StatelessWidget {
-  String title = "";
-  String description = "";
+class MyTodoAddPage extends StatefulWidget {
+  const MyTodoAddPage({Key? key}) : super(key: key);
 
-  MyTodoAddPage({Key? key}) : super(key: key) {}
+  @override
+  State<MyTodoAddPage> createState() => _MyTodoAddPageState();
+}
+
+class _MyTodoAddPageState extends State<MyTodoAddPage> {
+  final titleTextFieldController = TextEditingController();
+  final descriptionTextFieldController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   // todoをpostするメソッド
   Future<void> postTodo() async {
     log('postTodo()');
     Map<String, String> headers = {'content-type': 'application/json'};
-    var body = jsonEncode({'title': title, 'description': description});
+    var body = jsonEncode({
+      'title': titleTextFieldController.text,
+      'description': descriptionTextFieldController.text
+    });
     final response = await http.post(
       Uri.http('127.0.0.1:5000', 'api/todos'),
       headers: headers,
       body: body,
     );
 
-    //if (!mounted) return;
+    if (!mounted) return;
     var jsonRes = jsonDecode(response.body);
     log(jsonRes.toString());
-    /*setState(() {
-      todo_items = jsonRes;
-    });*/
     if (response.statusCode == 200) {
     } else {
       throw Exception('Failed to create Todo');
@@ -158,66 +168,86 @@ class MyTodoAddPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Todo 追加'),
-      ),
-      body: Container(
-        // まわりに余白を追加
-        padding: EdgeInsets.all(8),
-        // todo post用のテキストフィールド
-        child: Column(
-          children: <Widget>[
-            // title入力用のテキストフィールド
-            TextField(
-              onChanged: (text) {
-                title = text;
-              },
-            ),
-            // 余白
-            const SizedBox(height: 8),
-            // description入力用のテキストフィールド
-            TextField(
-              onChanged: (text) {
-                description = text;
-              },
-            ),
-            // 余白
-            const SizedBox(height: 8),
-            // todo追加用のボタン
-            // 'Todo 追加'と表示されて、押下するとtodo postを実行する
-            Container(
-              // 横に広げる
-              width: double.infinity,
-              // ボタンの実装(todo postの実行)
-              child: ElevatedButton(
-                onPressed: () {
-                  log(title);
-                  log(description);
-                  // postの実行
-                  postTodo();
-                  // 成功であれば戻る
-                  Navigator.pop(context, '');
+    return WillPopScope(
+      onWillPop: () {
+        // 左上のbackの戻り値の設定
+        // 戻り値はpop()の中に設定される。
+        Navigator.of(context).pop('');
+        return Future.value(false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Todo 追加'),
+        ),
+        body: Container(
+          // まわりに余白を追加
+          padding: EdgeInsets.all(8),
+          // todo post用のテキストフィールド
+          child: Column(
+            children: <Widget>[
+              // title入力用のテキストフィールド
+              TextField(
+                controller: titleTextFieldController,
+                onChanged: (text) {
+                  //title = text;
                 },
-                child: Text('Todo 追加', style: TextStyle(color: Colors.white)),
               ),
-            ),
-            // 余白
-            const SizedBox(height: 8),
-            // 前の画面に戻るボタン 'キャンセル'と表示
-            Container(
-              // 横に広げる
-              width: double.infinity,
-              // ボタンの実装(キャンセル処理、前の画面に戻る)
-              child: TextButton(
-                onPressed: () {
-                  //Navigator.of(context).pop();
-                  Navigator.pop(context, '');
+              // 余白
+              const SizedBox(height: 8),
+              // description入力用のテキストフィールド
+              TextField(
+                controller: descriptionTextFieldController,
+                onChanged: (text) {
+                  //description = text;
                 },
-                child: Text('キャンセル'),
               ),
-            ),
-          ],
+              // 余白
+              const SizedBox(height: 8),
+              // todo追加用のボタン
+              // 'Todo 追加'と表示されて、押下するとtodo postを実行する
+              Container(
+                // 横に広げる
+                width: double.infinity,
+                // ボタンの実装(todo postの実行)
+                child: ElevatedButton(
+                  onPressed: () {
+                    log(titleTextFieldController.text);
+                    log(descriptionTextFieldController.text);
+                    // postの実行
+                    postTodo();
+                    // ここでpopして前のリストビューの画面に戻すと、
+                    // リストビューで行っているgetメソッドのほうが
+                    // ここで実行しているpostメソッドよりも
+                    // はやく実行されてしまっていて、データがリストに格納
+                    // されないということが発生したため、
+                    // ここでpopでもどすようにしていない。
+                    // 前の画面にもどるには左上のbackボタンをおすようにしている。
+
+                    // postTodoが実行されて問題なければ、
+                    // テキストフィールドの値はクリアしておく。
+                    titleTextFieldController.clear();
+                    descriptionTextFieldController.clear();
+                  },
+                  child: Text('Todo 追加', style: TextStyle(color: Colors.white)),
+                ),
+              ),
+              // 余白
+              const SizedBox(height: 8),
+              // 前の画面に戻るボタン 'キャンセル'と表示
+              Container(
+                // 横に広げる
+                width: double.infinity,
+                // ボタンの実装(キャンセル処理、前の画面に戻る)
+                child: TextButton(
+                  onPressed: () {
+                    //Navigator.of(context).pop();
+                    Navigator.pop(context, '');
+                  },
+                  child: Text('キャンセル'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
