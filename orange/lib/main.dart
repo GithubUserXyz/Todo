@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       //theme: ThemeData(fontFamily: 'NotoSansJP'),
       home: MyListPage(),
     );
@@ -223,12 +223,34 @@ class _MyTodoAddPageState extends State<MyTodoAddPage> {
                     // ここでpopでもどすようにしていない。
                     // 前の画面にもどるには左上のbackボタンをおすようにしている。
 
+                    // 画面にポップアップを表示して保存内容を表示
+                    // 変数をのちにクリアするのでその前にローカル変数に保存
+                    var title = titleTextFieldController.text;
+                    var desc = descriptionTextFieldController.text;
+                    // alertdailogの表示
+                    showDialog(
+                      context: context,
+                      builder: (_) {
+                        return AlertDialog(
+                          title: const Text('追加内容'),
+                          content: Text('title: ${title} description: ${desc}'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+
                     // postTodoが実行されて問題なければ、
                     // テキストフィールドの値はクリアしておく。
                     titleTextFieldController.clear();
                     descriptionTextFieldController.clear();
                   },
-                  child: Text('Todo 追加', style: TextStyle(color: Colors.white)),
+                  child: const Text('Todo 追加',
+                      style: TextStyle(color: Colors.white)),
                 ),
               ),
               // 余白
@@ -243,7 +265,7 @@ class _MyTodoAddPageState extends State<MyTodoAddPage> {
                     //Navigator.of(context).pop();
                     Navigator.pop(context, '');
                   },
-                  child: Text('キャンセル'),
+                  child: const Text('キャンセル'),
                 ),
               ),
             ],
