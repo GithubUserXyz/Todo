@@ -104,14 +104,19 @@ class _MyListPageState extends State<MyListPage> {
         body: ListView.builder(
           itemCount: todo_items.length,
           itemBuilder: (BuildContext context, int index) {
-            return Card(
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    title: Text(todo_items[index]['title']),
-                    subtitle: Text(todo_items[index]['description']),
-                  )
-                ],
+            return GestureDetector(
+              onTap: () {
+                log(todo_items[index]['id'].toString());
+              },
+              child: Card(
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      title: Text(todo_items[index]['title']),
+                      subtitle: Text(todo_items[index]['description']),
+                    )
+                  ],
+                ),
               ),
             );
           },
