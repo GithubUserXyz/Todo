@@ -4,8 +4,9 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
-import 'MyTodoAddPage.dart' show MyTodoAddPage;
-import 'MyListPage.dart' show MyListPage;
+import 'my_todo_add_page.dart' show MyTodoAddPage;
+import 'my_todo_list_page.dart' show MyListPage;
+import 'my_todo_info_page.dart' show MyTodoInfoPage;
 
 void main() {
   runApp(const MyApp());
