@@ -4,7 +4,8 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
-import 'MyTodoAddPage.dart' show MyTodoAddPage;
+import 'my_todo_add_page.dart' show MyTodoAddPage;
+import 'my_todo_info_page.dart' show MyTodoInfoPage;
 import 'package:orange/main.dart';
 
 class MyListPage extends StatefulWidget {
@@ -34,6 +35,20 @@ class _MyListPageState extends State<MyListPage> {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const MyTodoAddPage()),
+    );
+
+    if (!mounted) return;
+
+    log(result);
+    // 再描画
+    getTodo();
+  }
+
+  // todo内容を表示するページへ遷移
+  Future<void> _navigateAndDisplayTodoInfoPage(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const MyTodoInfoPage()),
     );
 
     if (!mounted) return;
@@ -94,6 +109,7 @@ class _MyListPageState extends State<MyListPage> {
             return GestureDetector(
               onTap: () {
                 log(todo_items[index]['id'].toString());
+                _navigateAndDisplayTodoInfoPage(context);
               },
               child: Card(
                 child: Column(
