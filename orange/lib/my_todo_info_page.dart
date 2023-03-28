@@ -7,16 +7,35 @@ import 'package:flutter/material.dart';
 import 'package:orange/main.dart';
 
 class MyTodoInfoPage extends StatefulWidget {
-  const MyTodoInfoPage({Key? key}) : super(key: key);
+  const MyTodoInfoPage({super.key, required this.id});
+  // 表示するtodoのid
+  final int id;
 
   @override
   State<MyTodoInfoPage> createState() => _MyTodoInfoPage();
 }
 
 class _MyTodoInfoPage extends State<MyTodoInfoPage> {
+  //表示するためのtodo(json)を格納する変数
+  var todo_item;
+
   @override
   void initState() {
     super.initState();
+    getTodo();
+  }
+
+  // todoのデータ一つを取得してtodo_itemに格納するメソッド
+  Future<void> getTodo() async {
+    log('getTodo');
+    var response =
+        await http.get(Uri.http('127.0.0.1:5000', 'api/todos/${widget.id}'));
+    // utf8は文字化け対策
+    var jsonRes = jsonDecode(utf8.decode(response.bodyBytes));
+    log(jsonRes.toString());
+    setState(() {
+      todo_item = jsonRes;
+    });
   }
 
   @override

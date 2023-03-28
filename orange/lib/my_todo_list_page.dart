@@ -45,17 +45,20 @@ class _MyListPageState extends State<MyListPage> {
   }
 
   // todo内容を表示するページへ遷移
-  Future<void> _navigateAndDisplayTodoInfoPage(BuildContext context) async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const MyTodoInfoPage()),
-    );
+  Future<void> _navigateAndDisplayTodoInfoPage(
+      BuildContext context, int id) async {
+    if (!id.isNegative) {
+      final result = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MyTodoInfoPage(id: id)),
+      );
 
-    if (!mounted) return;
+      if (!mounted) return;
 
-    log(result);
-    // 再描画
-    getTodo();
+      log(result);
+      // 再描画
+      getTodo();
+    }
   }
 
   // 初期化処理
@@ -109,7 +112,8 @@ class _MyListPageState extends State<MyListPage> {
             return GestureDetector(
               onTap: () {
                 log(todo_items[index]['id'].toString());
-                _navigateAndDisplayTodoInfoPage(context);
+                _navigateAndDisplayTodoInfoPage(
+                    context, todo_items[index]['id']);
               },
               child: Card(
                 child: Column(

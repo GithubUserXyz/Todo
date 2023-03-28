@@ -43,6 +43,19 @@ def todo_get():
     # 200 OKステータスコードと一書に返答
     return jsonify(todos_dict), 200
 
+###############################################################
+# todo1件の内容をかえす
+#
+@app.get("/api/todos/<int:id>")
+def todo_get_(id):
+    todo = db.get_or_404(Todo, id)
+    return jsonify(
+        {
+        "id":todo.id,
+        "title": todo.title,
+        "description": todo.description
+        }
+    )
 
 ###############################################################
 # todoを追加
