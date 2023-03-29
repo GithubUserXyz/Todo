@@ -53,7 +53,24 @@ class _MyTodoInfoPage extends State<MyTodoInfoPage> {
           // まわりに余白を追加
           padding: EdgeInsets.all(8),
           child: Column(
-            children: <Widget>[],
+            children: <Widget>[
+              const Text('タイトル:'),
+              const SizedBox(
+                height: 8,
+              ),
+              Text(todo_item['title']),
+              const SizedBox(
+                height: 8,
+              ),
+              const Text('説明:'),
+              const SizedBox(
+                height: 8,
+              ),
+              Text(todo_item['description']),
+              const SizedBox(
+                height: 8,
+              ),
+            ],
           ),
         ),
       ),
