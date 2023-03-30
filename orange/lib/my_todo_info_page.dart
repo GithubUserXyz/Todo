@@ -40,40 +40,72 @@ class _MyTodoInfoPage extends State<MyTodoInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        Navigator.of(context).pop('');
-        return Future.value(false);
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Todo 内容'),
-        ),
-        body: Container(
-          // まわりに余白を追加
-          padding: EdgeInsets.all(8),
-          child: Column(
-            children: <Widget>[
-              const Text('タイトル:'),
-              const SizedBox(
-                height: 8,
+    return todo_item == null
+        ? const Center(child: CircularProgressIndicator())
+        : WillPopScope(
+            onWillPop: () {
+              Navigator.of(context).pop('');
+              return Future.value(false);
+            },
+            child: Scaffold(
+              appBar: AppBar(
+                title: const Text('Todo 内容'),
               ),
-              Text(todo_item['title']),
-              const SizedBox(
-                height: 8,
+              body: Container(
+                // まわりに余白を追加
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Text('タイトル:'),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(todo_item['title']),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    const Text('説明:'),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(todo_item['description']),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        // 削除ボタン
+                        Expanded(
+                          child: TextButton(
+                            onPressed: () {},
+                            child: const Text(
+                              '削除',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ),
+                        // 変更ボタン
+                        Expanded(
+                          //width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            child: const Text(
+                              '編集',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                  ],
+                ),
               ),
-              const Text('説明:'),
-              const SizedBox(
-                height: 8,
-              ),
-              Text(todo_item['description']),
-              const SizedBox(
-                height: 8,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
   }
 }
