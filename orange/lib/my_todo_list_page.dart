@@ -48,14 +48,14 @@ class _MyListPageState extends State<MyListPage> {
   Future<void> _navigateAndDisplayTodoInfoPage(
       BuildContext context, int id) async {
     if (!id.isNegative) {
-      final result = await Navigator.push(
+      await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => MyTodoInfoPage(id: id)),
       );
 
       if (!mounted) return;
 
-      log(result);
+      //log(result);
       // 再描画
       getTodo();
     }

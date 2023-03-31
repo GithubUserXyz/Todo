@@ -38,6 +38,27 @@ class _MyTodoInfoPage extends State<MyTodoInfoPage> {
     });
   }
 
+  // todo1件を削除するメソッド
+  Future<void> deleteTodo() async {
+    log('deleteTodo');
+    final response =
+        await http.delete(Uri.http('127.0.0.1:5000', 'api/todos/${widget.id}'));
+    if (!mounted) return;
+    if (response.statusCode == 200) {
+      // utf8は文字化け対策
+      //var jsonRes = jsonDecode(utf8.decode(response.bodyBytes));
+    } else {
+      throw Exception('Failed to delete Todo');
+    }
+  }
+
+  // 削除したときに表示するページへ遷移
+  Future<void> _navigateAndDisplayTodoDeletedPage(BuildContext context) async {
+    await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const MyTodoDeletePage()));
+    if (!mounted) return;
+  }
+
   @override
   Widget build(BuildContext context) {
     return todo_item == null
@@ -79,7 +100,12 @@ class _MyTodoInfoPage extends State<MyTodoInfoPage> {
                         // 削除ボタン
                         Expanded(
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              deleteTodo();
+                              //Navigator.pop(context, 'deleted');
+                              //Navigator.of(context).pop('deleted');
+                              _navigateAndDisplayTodoDeletedPage(context);
+                            },
                             child: const Text(
                               '削除',
                               style: TextStyle(color: Colors.black),
@@ -107,5 +133,33 @@ class _MyTodoInfoPage extends State<MyTodoInfoPage> {
               ),
             ),
           );
+  }
+}
+
+class MyTodoDeletePage extends StatefulWidget {
+  const MyTodoDeletePage({Key? key}) : super(key: key);
+
+  @override
+  State<MyTodoDeletePage> createState() => _MyTodoDeletePage();
+}
+
+class _MyTodoDeletePage extends State<MyTodoDeletePage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.popUntil(context, (route) => route.isFirst);
+          },
+          child: const Text('Go back!'),
+        ),
+      ),
+    );
   }
 }
