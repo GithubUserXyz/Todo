@@ -59,6 +59,19 @@ class _MyTodoInfoPage extends State<MyTodoInfoPage> {
     if (!mounted) return;
   }
 
+  // 編集ページへ遷移
+  Future<void> _navigateAndDisplayTodoUpdatePage(BuildContext context) async {
+    await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MyTodoUpdatePage(id: widget.id),
+        ));
+    if (!mounted) return;
+    setState(() {
+      getTodo();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return todo_item == null
@@ -116,7 +129,9 @@ class _MyTodoInfoPage extends State<MyTodoInfoPage> {
                         Expanded(
                           //width: double.infinity,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              _navigateAndDisplayTodoUpdatePage(context);
+                            },
                             child: const Text(
                               '編集',
                               style: TextStyle(color: Colors.white),
@@ -136,6 +151,7 @@ class _MyTodoInfoPage extends State<MyTodoInfoPage> {
   }
 }
 
+// 削除ボタンを押して削除が実行されたあと、この画面に遷移
 class MyTodoDeletePage extends StatefulWidget {
   const MyTodoDeletePage({Key? key}) : super(key: key);
 
@@ -158,6 +174,115 @@ class _MyTodoDeletePage extends State<MyTodoDeletePage> {
             Navigator.popUntil(context, (route) => route.isFirst);
           },
           child: const Text('Go back!'),
+        ),
+      ),
+    );
+  }
+}
+
+class MyTodoUpdatePage extends StatefulWidget {
+  const MyTodoUpdatePage({super.key, required this.id});
+  final int id;
+
+  @override
+  State<MyTodoUpdatePage> createState() => _MyTodoUpdatePage();
+}
+
+class _MyTodoUpdatePage extends State<MyTodoUpdatePage> {
+  // 変更するためのtodo(json)を格納する変数
+  var todo_item;
+
+  final titleTextFieldController = TextEditingController();
+  final descriptionTextFieldController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    getTodo();
+  }
+
+  // todoのデータ一つを取得してtodo_itemに格納するメソッド
+  Future<void> getTodo() async {
+    log('getTodo');
+    var response =
+        await http.get(Uri.http('127.0.0.1:5000', 'api/todos/${widget.id}'));
+    // utf8は文字化け対策
+    var jsonRes = jsonDecode(utf8.decode(response.bodyBytes));
+    log(jsonRes.toString());
+    setState(() {
+      todo_item = jsonRes;
+      titleTextFieldController.text = todo_item['title'];
+      descriptionTextFieldController.text = todo_item['description'];
+    });
+  }
+
+  // todoデータをupdateするメソッド
+  Future<void> updateTodo() async {
+    log('updateTodo');
+    Map<String, String> headers = {'content-type': 'application/json'};
+    var body = jsonEncode({
+      'title': titleTextFieldController.text,
+      'description': descriptionTextFieldController.text
+    });
+    final response = await http.put(
+      Uri.http('127.0.0.1:5000', 'api/todos/${widget.id}'),
+      headers: headers,
+      body: body,
+    );
+    if (!mounted) return;
+    var jsonRes = jsonDecode(response.body);
+    log(jsonRes.toString());
+    if (response.statusCode == 200) {
+    } else {
+      throw Exception('Failed to create Todo');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.of(context).pop('');
+        return Future.value(false);
+      },
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Todo 変更')),
+        body: Container(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            children: <Widget>[
+              TextField(
+                controller: titleTextFieldController,
+                onChanged: (text) {},
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: descriptionTextFieldController,
+                onChanged: (text) {},
+              ),
+              const SizedBox(height: 8),
+              Container(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    updateTodo();
+                  },
+                  child: const Text('Todo 変更',
+                      style: TextStyle(color: Colors.white)),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                width: double.infinity,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, '');
+                  },
+                  child: const Text('キャンセル'),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
