@@ -11,6 +11,10 @@
 !/orange/lib/
 !/orange/lib/**
 !/orange/pubspec.yaml
+!/apple/
+!/apple/lib/
+!/apple/lib/**
+!/apple/pubspec.yaml
 
 # 禁止
 __pycache__
