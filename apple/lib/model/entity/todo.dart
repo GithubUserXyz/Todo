@@ -16,4 +16,11 @@ class Todo {
       description: json[_columnDescription],
     );
   }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    //return super.toString();
+    return "id:${this.id},title:${this.title},description:${this.description}";
+  }
 }

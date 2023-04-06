@@ -1,14 +1,15 @@
+import 'package:apple/model/api/api_service.dart';
 import 'package:apple/model/repository/todo_repository.dart';
 
 import '../entity/todo.dart';
 
-class TodoRepositoryApi implements TodoRepository {
+class TodoRepositoryApi extends ApiService implements TodoRepository {
   TodoRepositoryApi();
+
   @override
   Future<Todo> readTodoById(int id) async {
     // TodoデータをAPIを通じて読み込む処理
-    // 暫定
-    return Todo(id: 1, title: "test title", description: "test");
+    return super.getTodo(id);
   }
 
   @override

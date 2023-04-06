@@ -13,11 +13,29 @@ class TodoDetailViewModel extends ChangeNotifier {
   }
 
   final TodoRepository _repository;
-  late Todo _todo;
-  bool _isLoading = false;
-  bool _isNew = false;
 
-  Todo initTodo() {
-    return Todo(id: -1, title: "", description: "");
+  late Todo _todo;
+  Todo get todo => _todo;
+
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
+  bool _isNew = false;
+  bool get isNew => _isNew;
+
+  void readTodo(int id) async {
+    _startLoading();
+    _todo = await _repository.readTodoById(id);
+    _finishLoading();
+  }
+
+  void _startLoading() {
+    _isLoading = true;
+    notifyListeners();
+  }
+
+  void _finishLoading() {
+    _isLoading = false;
+    notifyListeners();
   }
 }
