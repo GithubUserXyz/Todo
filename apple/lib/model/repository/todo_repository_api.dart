@@ -7,6 +7,12 @@ class TodoRepositoryApi extends ApiService implements TodoRepository {
   TodoRepositoryApi();
 
   @override
+  Future<List<Todo>> readAllTodo() async {
+    // TodoデータをAPIを通じてすべて読み込む処理
+    return super.getTodoList();
+  }
+
+  @override
   Future<Todo> readTodoById(int id) async {
     // TodoデータをAPIを通じて読み込む処理
     return super.getTodo(id);
