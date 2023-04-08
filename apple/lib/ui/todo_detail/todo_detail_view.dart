@@ -17,11 +17,15 @@ class TodoDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = TodoDetailViewModel(todo, TodoRepositoryApi());
-    // 暫定 Todoを読み込ませたかった。
-    vm.readTodo(1);
     return ChangeNotifierProvider(
       create: (_) => vm,
-      child: _TodoDetailPage(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Todo 詳細'),
+        ),
+        body: _TodoDetailPage(),
+      ),
+      //child: _TodoDetailPage(),
     );
   }
 }
@@ -34,6 +38,6 @@ class _TodoDetailPage extends StatelessWidget {
       return const Center(child: CircularProgressIndicator());
     }
 
-    return Scaffold(body: Text("${vm.todo.title}"));
+    return Scaffold(body: Text(vm.todo.title));
   }
 }
