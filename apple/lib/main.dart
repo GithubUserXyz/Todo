@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Todo',
       routes: <String, WidgetBuilder>{
-        '/': (context) => TodoListView(),
+        '/': (context) => const TodoListView(),
         /*
         '/': (context) => TodoDetailView(
               todo: new Todo(id: 1, title: "", description: ""),
