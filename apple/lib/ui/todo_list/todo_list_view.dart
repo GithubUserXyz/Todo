@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:apple/model/repository/todo_repository_api.dart';
+import 'package:apple/ui/todo_add/todo_add_view.dart';
 import 'package:apple/ui/todo_detail/todo_detail_view.dart';
 import 'package:apple/ui/todo_list/todo_list_view_model.dart';
 import 'package:apple/model/entity/todo.dart';
@@ -21,8 +22,22 @@ class TodoListView extends StatelessWidget {
           title: const Text('Todo 一覧'),
         ),
         body: content,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _navigateAndDisplayTodoAddPage(context);
+          },
+          child: const Icon(Icons.add),
+        ),
       ),
     );
+  }
+
+  void _navigateAndDisplayTodoAddPage(BuildContext context) {
+    var route = MaterialPageRoute(
+      settings: const RouteSettings(name: '/todo_add'),
+      builder: (BuildContext context) => TodoAddView(),
+    );
+    Navigator.push(context, route);
   }
 }
 
