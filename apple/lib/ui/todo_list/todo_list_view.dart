@@ -9,11 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TodoListView extends StatelessWidget {
-  const TodoListView({super.key});
+  TodoListView({super.key});
+
+  final vm = TodoListViewModel(TodoRepositoryApi());
 
   @override
   Widget build(BuildContext context) {
-    final vm = TodoListViewModel(TodoRepositoryApi());
     final content = _TodoListPage();
     return ChangeNotifierProvider(
       create: (_) => vm,
@@ -32,12 +33,12 @@ class TodoListView extends StatelessWidget {
     );
   }
 
-  void _navigateAndDisplayTodoAddPage(BuildContext context) {
+  void _navigateAndDisplayTodoAddPage(BuildContext context) async {
     var route = MaterialPageRoute(
       settings: const RouteSettings(name: '/todo_add'),
       builder: (BuildContext context) => TodoAddView(),
     );
-    Navigator.push(context, route);
+    await Navigator.push(context, route);
   }
 }
 
