@@ -34,5 +34,21 @@ class ApiService {
 
   Future<void> putTodo() async {}
   Future<void> deleteTodo() async {}
-  Future<void> post() async {}
+
+  /// titleとdescriptionをapiを通じて追加する
+  Future<void> postTodo(String title, String description) async {
+    Map<String, String> headers = {'content-type': 'application/json'};
+    var body = jsonEncode({'title': title, 'description': description});
+    final response = await http.post(
+      Uri.http(api_url, 'api/todos'),
+      headers: headers,
+      body: body,
+    );
+    var jsonRes = jsonDecode(response.body);
+    log(jsonRes.toString());
+    if (response.statusCode == 200) {
+    } else {
+      throw Exception('Failed to Create Todo');
+    }
+  }
 }

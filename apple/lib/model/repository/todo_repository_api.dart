@@ -19,8 +19,9 @@ class TodoRepositoryApi extends ApiService implements TodoRepository {
   }
 
   @override
-  Future<void> createTodo(Todo todo) async {
+  Future<void> createTodo({title = String, description = String}) async {
     // TodoデータをAPIを通じて登録する処理
+    super.postTodo(title, description);
   }
 
   @override

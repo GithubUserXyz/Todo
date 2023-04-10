@@ -1,4 +1,6 @@
 import 'package:apple/model/entity/todo.dart';
+import 'package:apple/model/repository/todo_repository_api.dart';
+import 'package:apple/ui/todo_add/todo_add_view_model.dart';
 import 'package:apple/ui/todo_detail/todo_detail_view.dart';
 import 'package:apple/ui/todo_list/todo_list_view.dart';
 import 'package:apple/ui/todo_list/todo_list_view_model.dart';
@@ -16,11 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Todo',
       routes: <String, WidgetBuilder>{
-        '/': (context) => const TodoListView(),
-        /*
-        '/': (context) => TodoDetailView(
-              todo: new Todo(id: 1, title: "", description: ""),
-            ),*/
+        '/': (context) => TodoListView(),
       },
     );
   }

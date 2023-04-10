@@ -1,5 +1,7 @@
 import 'package:apple/model/repository/todo_repository_api.dart';
 import 'package:apple/ui/todo_add/todo_add_view_model.dart';
+import 'package:apple/ui/todo_list/todo_list_view.dart';
+import 'package:apple/ui/todo_list/todo_list_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -42,7 +44,7 @@ class _TodoAddForm extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          TextField(),
+          TextField(controller: vm.titleTextFieldController),
           const SizedBox(height: 8),
           const Text(
             'Description:',
@@ -51,12 +53,16 @@ class _TodoAddForm extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          TextField(),
+          TextField(controller: vm.descriptionTextFieldController),
           const SizedBox(height: 8),
           Container(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                vm.createTodo();
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/', (route) => false);
+              },
               child: const Text(
                 '追加',
                 style: TextStyle(
