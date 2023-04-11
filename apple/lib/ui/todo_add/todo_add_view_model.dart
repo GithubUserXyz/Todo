@@ -4,9 +4,22 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 class TodoAddViewModel extends ChangeNotifier {
-  TodoAddViewModel(this._repository) {
+  TodoAddViewModel(this._repository, [Todo? todo]) {
     _titleTextFieldController = TextEditingController();
     _descriptionTextFieldController = TextEditingController();
+
+    /// 引数でTodo(todo)を受け取って、
+    /// 実際に引数として受け取らなければ、新規作成、
+    /// 　　　　　　　　受け取れば、編集、
+    /// というような動作。
+    if (todo == null) {
+      // 新規作成としての動作
+      _isNew = true;
+    } else {
+      // 編集としての動作
+      _isNew = false;
+      _todo = todo;
+    }
   }
 
   late TextEditingController _titleTextFieldController;
@@ -18,6 +31,12 @@ class TodoAddViewModel extends ChangeNotifier {
       _descriptionTextFieldController;
 
   final TodoRepository _repository;
+
+  Todo? _todo;
+  Todo? get todo => _todo;
+
+  bool _isNew = true;
+  bool get isNew => _isNew;
 
   bool _isSending = false;
   bool get isSending => _isSending;
