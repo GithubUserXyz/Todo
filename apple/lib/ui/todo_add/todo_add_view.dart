@@ -1,3 +1,4 @@
+import 'package:apple/model/entity/todo.dart';
 import 'package:apple/model/repository/todo_repository_api.dart';
 import 'package:apple/ui/todo_add/todo_add_view_model.dart';
 import 'package:apple/ui/todo_list/todo_list_view.dart';
@@ -6,14 +7,25 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TodoAddView extends StatelessWidget {
+  late final TodoAddViewModel vm;
+  // ignore: use_key_in_widget_constructors
+  TodoAddView([Todo? todo]) {
+    if (todo != null) {
+      // 編集としての動作となる
+      vm = TodoAddViewModel(TodoRepositoryApi(), todo);
+    } else {
+      // 新規作成の動作となる
+      vm = TodoAddViewModel(TodoRepositoryApi());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final vm = TodoAddViewModel(TodoRepositoryApi());
-    return ChangeNotifierProvider(
-      create: (_) => vm,
+    return ChangeNotifierProvider<TodoAddViewModel>.value(
+      value: vm,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Todo 追加"),
+          title: Text(vm.isNew ? "Todo 追加" : 'Todo 編集'),
         ),
         body: _TodoAddPage(),
       ),
@@ -24,11 +36,11 @@ class TodoAddView extends StatelessWidget {
 class _TodoAddPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return _TodoAddForm();
+    return _TodoForm();
   }
 }
 
-class _TodoAddForm extends StatelessWidget {
+class _TodoForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<TodoAddViewModel>(context);
@@ -59,13 +71,19 @@ class _TodoAddForm extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {
-                vm.createTodo();
+                if (vm.isNew == true) {
+                  // 新規作成時の動作
+                  vm.createTodo();
+                } else {
+                  // 編集時の動作
+                  vm.updateTodo();
+                }
                 Navigator.pushNamedAndRemoveUntil(
                     context, '/', (route) => false);
               },
-              child: const Text(
-                '追加',
-                style: TextStyle(
+              child: Text(
+                vm.isNew ? '追加' : '変更',
+                style: const TextStyle(
                   fontSize: 20,
                 ),
               ),
