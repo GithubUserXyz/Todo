@@ -24,7 +24,7 @@ class ApiService {
   }
 
   /// idで指定されたTodoを取得する
-  Future<Todo> getTodo(int id) async {
+  Future<Todo> getTodoById(int id) async {
     var response = await http.get(Uri.http(api_url, 'api/todos/$id'));
     // utf8は文字化け対策
     var jsonRes = jsonDecode(utf8.decode(response.bodyBytes));
@@ -32,11 +32,32 @@ class ApiService {
     return Todo.fromJson(jsonRes);
   }
 
-  Future<void> putTodo() async {}
+  Future<Todo> putTodo(Todo todo) async {
+    log('updateTodo');
+    Map<String, String> headers = {'content-type': 'application/json'};
+    var body = jsonEncode({
+      'title': todo.title,
+      'description': todo.description,
+    });
+    final response = await http.put(
+      Uri.http('127.0.0.1:5000', 'api/todos/${todo.id}'),
+      headers: headers,
+      body: body,
+    );
+    var jsonRes = jsonDecode(utf8.decode(response.bodyBytes));
+    //var jsonRes = jsonDecode(response.body);
+    log(jsonRes.toString());
+    if (response.statusCode == 200) {
+    } else {
+      throw Exception('Failed to create Todo');
+    }
+    return Todo.fromJson(jsonRes);
+  }
+
   Future<void> deleteTodo() async {}
 
   /// titleとdescriptionをapiを通じて追加する
-  Future<void> postTodo(String title, String description) async {
+  Future<Todo> postTodo(String title, String description) async {
     Map<String, String> headers = {'content-type': 'application/json'};
     var body = jsonEncode({'title': title, 'description': description});
     final response = await http.post(
@@ -44,11 +65,13 @@ class ApiService {
       headers: headers,
       body: body,
     );
-    var jsonRes = jsonDecode(response.body);
+    var jsonRes = jsonDecode(utf8.decode(response.bodyBytes));
+    //var jsonRes = jsonDecode(response.body);
     log(jsonRes.toString());
     if (response.statusCode == 200) {
     } else {
       throw Exception('Failed to Create Todo');
     }
+    return Todo.fromJson(jsonRes);
   }
 }

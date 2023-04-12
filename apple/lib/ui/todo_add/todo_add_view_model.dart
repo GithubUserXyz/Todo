@@ -19,6 +19,8 @@ class TodoAddViewModel extends ChangeNotifier {
       // 編集としての動作
       _isNew = false;
       _todo = todo;
+      _titleTextFieldController.text = _todo!.title;
+      _descriptionTextFieldController.text = _todo!.description;
     }
   }
 
@@ -43,10 +45,20 @@ class TodoAddViewModel extends ChangeNotifier {
 
   void createTodo() async {
     _startCreating();
-    await _repository.createTodo(
+    _todo = await _repository.createTodo(
       title: _titleTextFieldController.text,
       description: _descriptionTextFieldController.text,
     );
+    _isNew = false;
+    _finishCreating();
+  }
+
+  void updateTodo() async {
+    if (_todo == null) return;
+    _startCreating();
+    _todo!.title = _titleTextFieldController.text;
+    _todo!.description = _descriptionTextFieldController.text;
+    _todo = await _repository.updateTodo(_todo!);
     _finishCreating();
   }
 
