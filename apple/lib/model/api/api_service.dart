@@ -54,7 +54,16 @@ class ApiService {
     return Todo.fromJson(jsonRes);
   }
 
-  Future<void> deleteTodo() async {}
+  Future<void> deleteTodoById(int id) async {
+    final response =
+        await http.delete(Uri.http('127.0.0.1:5000', 'api/todos/$id'));
+    if (response.statusCode == 200) {
+      // utf8は文字化け対策
+      //var jsonRes = jsonDecode(utf8.decode(response.bodyBytes));
+    } else {
+      throw Exception('Failed to delete Todo');
+    }
+  }
 
   /// titleとdescriptionをapiを通じて追加する
   Future<Todo> postTodo(String title, String description) async {

@@ -33,5 +33,6 @@ class TodoRepositoryApi extends ApiService implements TodoRepository {
   @override
   Future<void> deleteTodoById(int id) async {
     // TodoデータをAPIを通じて消去する処理
+    super.deleteTodoById(id);
   }
 }
