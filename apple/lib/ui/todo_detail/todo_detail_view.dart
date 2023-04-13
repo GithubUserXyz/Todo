@@ -52,6 +52,11 @@ class _TodoDetailWidget extends StatelessWidget {
     await Navigator.push(context, route);
   }
 
+  void _delete(BuildContext context, TodoDetailViewModel vm, int id) async {
+    vm.deleteTodo(id);
+    await Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+  }
+
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<TodoDetailViewModel>(context);
@@ -97,6 +102,21 @@ class _TodoDetailWidget extends StatelessWidget {
               },
               child: const Text(
                 '変更',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                _delete(context, vm, _todo.id);
+              },
+              child: const Text(
+                '削除',
                 style: TextStyle(
                   fontSize: 20,
                 ),

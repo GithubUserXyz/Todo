@@ -29,6 +29,12 @@ class TodoDetailViewModel extends ChangeNotifier {
     _finishLoading();
   }
 
+  void deleteTodo(int id) async {
+    _startLoading();
+    await _repository.deleteTodoById(id);
+    _finishLoading();
+  }
+
   void _startLoading() {
     _isLoading = true;
     notifyListeners();
