@@ -41,55 +41,79 @@ class _TodoAddPage extends StatelessWidget {
 }
 
 class _TodoForm extends StatelessWidget {
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final vm = Provider.of<TodoAddViewModel>(context);
     return Container(
       padding: const EdgeInsets.all(8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          const Text(
-            'Title:',
-            style: TextStyle(
-              fontSize: 20,
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Text(
+              'Title:',
+              style: TextStyle(
+                fontSize: 20,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          TextField(controller: vm.titleTextFieldController),
-          const SizedBox(height: 8),
-          const Text(
-            'Description:',
-            style: TextStyle(
-              fontSize: 20,
-            ),
-          ),
-          const SizedBox(height: 8),
-          TextField(controller: vm.descriptionTextFieldController),
-          const SizedBox(height: 8),
-          Container(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                if (vm.isNew == true) {
-                  // 新規作成時の動作
-                  vm.createTodo();
-                } else {
-                  // 編集時の動作
-                  vm.updateTodo();
+            const SizedBox(height: 8),
+            TextFormField(
+              // title field
+              controller: vm.titleTextFieldController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter some text';
                 }
-                Navigator.pushNamedAndRemoveUntil(
-                    context, '/', (route) => false);
+                return null;
               },
-              child: Text(
-                vm.isNew ? '追加' : '変更',
-                style: const TextStyle(
-                  fontSize: 20,
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Description:',
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+            const SizedBox(height: 8),
+            TextFormField(
+              // description field
+              controller: vm.descriptionTextFieldController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter some text';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 8),
+            Container(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    if (vm.isNew == true) {
+                      // 新規作成時の動作
+                      vm.createTodo();
+                    } else {
+                      // 編集時の動作
+                      vm.updateTodo();
+                    }
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, '/', (route) => false);
+                  }
+                },
+                child: Text(
+                  vm.isNew ? '追加' : '変更',
+                  style: const TextStyle(
+                    fontSize: 20,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
