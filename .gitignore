@@ -15,6 +15,8 @@
 !/apple/lib/
 !/apple/lib/**
 !/apple/pubspec.yaml
+!/apple/test/
+!/apple/test/**
 
 # 禁止
 __pycache__
