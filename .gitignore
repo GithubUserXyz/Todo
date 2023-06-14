@@ -17,6 +17,8 @@
 !/apple/pubspec.yaml
 !/apple/test/
 !/apple/test/**
+!/grape/
+!/grape/**
 
 # 禁止
 __pycache__
