@@ -1,4 +1,5 @@
 import 'dart:convert';
+//import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../entity/todo.dart';
@@ -9,6 +10,8 @@ class TodoApi implements TodoRepository {
   Future<List<Todo>> readAllTodos() async {
     var response = await http.get(Uri.http('127.0.0.1:5000', 'api/todos'));
     var jsonRes = jsonDecode(utf8.decode(response.bodyBytes));
-    return jsonRes.map((map) => Todo.fromJson(map)).toList();
+    //debugPrint(jsonRes.map((map) => Todo.fromJson(map)).toList().toString());
+
+    return jsonRes.map<Todo>((map) => Todo.fromJson(map)).toList();
   }
 }

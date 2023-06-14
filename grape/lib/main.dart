@@ -17,10 +17,12 @@ final _router = GoRouter(
 );
 
 void main(List<String> args) {
-  runApp(ChangeNotifierProvider<MainState>(
-    child: const MyApp(),
-    create: (_) => MainState(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => MainState())],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
