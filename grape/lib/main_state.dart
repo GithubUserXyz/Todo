@@ -23,6 +23,13 @@ class MainState with ChangeNotifier {
     _finishLoading();
   }
 
+  Future<void> deleteTodo(int id) async {
+    _startLoading();
+    await _todoRepository.deleteTodoById(id);
+    _todoItems = await _todoRepository.readAllTodos();
+    _finishLoading();
+  }
+
   void _startLoading() {
     _isLoading = true;
     notifyListeners();

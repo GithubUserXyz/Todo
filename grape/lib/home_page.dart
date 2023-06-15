@@ -42,12 +42,17 @@ class HomePage extends StatelessWidget {
         itemCount: mainState.todoItems.length,
         itemBuilder: (context, index) {
           Todo currentTodo = mainState.todoItems[index];
-          return ListTile(
-            title: Text(currentTodo.title),
-            subtitle: Text(currentTodo.description),
+          return GestureDetector(
             onTap: () {
               context.push('/${EditPage.routeName}/$index');
             },
+            onDoubleTap: () async {
+              mainState.deleteTodo(mainState.todoItems[index].id);
+            },
+            child: ListTile(
+              title: Text(currentTodo.title),
+              subtitle: Text(currentTodo.description),
+            ),
           );
         },
       ),
