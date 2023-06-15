@@ -1,16 +1,9 @@
 # grape
 
-A new Flutter project.
+REST APIを使ったTodoアプリ。
 
-## Getting Started
+## 内容
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Provider,go_routerを使用
+- get_itでrepositoryの切り替えを行う
+- REST APIと通信を行っている(http使用)
