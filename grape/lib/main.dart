@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:grape/edit_page.dart';
 import 'package:provider/provider.dart';
 
 import 'home_page.dart';
 import 'main_state.dart';
+import 'model/entity/todo.dart';
 
 final _router = GoRouter(
   routes: [
@@ -12,14 +15,40 @@ final _router = GoRouter(
       builder: (context, state) {
         return const HomePage();
       },
+      routes: [
+        GoRoute(
+          name: 'EditTodo',
+          path: '${EditPage.routeName}/:id',
+          builder: (context, state) {
+            final id = state.pathParameters['id'];
+            if (id == null) {
+              return EditPage();
+            } else {
+              Todo? todo =
+                  Provider.of<MainState>(context).todoItems[int.parse(id)];
+              return EditPage(todo: todo);
+            }
+          },
+        ),
+        GoRoute(
+          name: 'AddTodo',
+          path: EditPage.routeName,
+          builder: (context, state) {
+            return EditPage();
+          },
+        ),
+      ],
     ),
   ],
 );
 
 void main(List<String> args) {
+  GetIt.instance.registerLazySingleton(() => MainState());
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => MainState())],
+      providers: [
+        ChangeNotifierProvider<MainState>.value(value: GetIt.I<MainState>())
+      ],
       child: const MyApp(),
     ),
   );

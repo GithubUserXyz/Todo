@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:grape/main_state.dart';
 import 'package:provider/provider.dart';
+
+import 'edit_page.dart';
+import 'model/entity/todo.dart';
 
 class HomePage extends StatelessWidget {
   static String routeName = '/';
@@ -13,6 +17,12 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(screenName)),
       body: buildTodoList(context),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.push('/${EditPage.routeName}');
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 
@@ -31,13 +41,13 @@ class HomePage extends StatelessWidget {
       child: ListView.builder(
         itemCount: mainState.todoItems.length,
         itemBuilder: (context, index) {
-          return Card(
-            child: Column(children: <Widget>[
-              ListTile(
-                title: Text(mainState.todoItems[index].title),
-                subtitle: Text(mainState.todoItems[index].description),
-              )
-            ]),
+          Todo currentTodo = mainState.todoItems[index];
+          return ListTile(
+            title: Text(currentTodo.title),
+            subtitle: Text(currentTodo.description),
+            onTap: () {
+              context.push('/${EditPage.routeName}/$index');
+            },
           );
         },
       ),
