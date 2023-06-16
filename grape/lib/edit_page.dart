@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:grape/model/repository/todo_repository.dart';
 import 'package:provider/provider.dart';
 
 import 'main_state.dart';
-import 'model/api/todo_api.dart';
 import 'model/entity/todo.dart';
 
 class _FormState extends ChangeNotifier {
@@ -19,7 +18,7 @@ class _FormState extends ChangeNotifier {
   bool _isSending = false;
   bool get isSending => _isSending;
 
-  var todoApi = TodoApi();
+  var todoApi = GetIt.I<TodoRepository>();
 
   _FormState({required this.todo}) {
     _titleField = TextEditingController();

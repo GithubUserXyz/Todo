@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grape/edit_page.dart';
+import 'package:grape/model/api/todo_api.dart';
+import 'package:grape/model/repository/todo_repository.dart';
 import 'package:provider/provider.dart';
 
 import 'home_page.dart';
@@ -43,6 +45,10 @@ final _router = GoRouter(
 );
 
 void main(List<String> args) {
+  // Repository
+  GetIt.instance.registerLazySingleton(() => TodoApi());
+  GetIt.instance.registerSingleton<TodoRepository>(GetIt.I<TodoApi>());
+  // MainState
   GetIt.instance.registerLazySingleton(() => MainState());
   runApp(
     MultiProvider(

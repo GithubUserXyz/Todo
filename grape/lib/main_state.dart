@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:grape/model/api/todo_api.dart';
+import 'package:get_it/get_it.dart';
 import 'package:grape/model/repository/todo_repository.dart';
 
 import 'model/entity/todo.dart';
 
 class MainState with ChangeNotifier {
   MainState() {
-    _todoRepository = TodoApi();
+    //_todoRepository = TodoApi();
+    _todoRepository = GetIt.I<TodoRepository>();
     readTodos();
   }
 
