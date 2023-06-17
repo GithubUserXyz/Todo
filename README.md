@@ -34,7 +34,7 @@ flask --app prog/todo run
 
 ## クライアント
 
-orangeディレクトリに移動して次を実行。
+grapeディレクトリに移動して次を実行。
 
 ```
 flutter run
