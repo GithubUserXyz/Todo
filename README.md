@@ -49,3 +49,7 @@ Error: Not found: 'package:http/http.dart'
 ```
 flutter packages get
 ```
+
+# 動作環境
+
+- Fedora 38上でPython3.11.3にてサーバー側の動作を確認している。
