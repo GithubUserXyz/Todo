@@ -1,3 +1,12 @@
+# Todo
+
+## 概要
+
+Flutter(クライアント)とPython(サーバー)でつくったTodoアプリ。
+
+![out](https://github.com/GithubUserXyz/Todo/assets/124037274/12d19f58-9715-4a16-81a6-23981a086b8e)
+
+
 # 依存関係のインストール
 
 ```
