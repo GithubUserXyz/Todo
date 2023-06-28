@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 import 'my_todo_add_page.dart' show MyTodoAddPage;
 import 'my_todo_info_page.dart' show MyTodoInfoPage;
-import 'package:orange/main.dart';
 
 class MyListPage extends StatefulWidget {
   const MyListPage({Key? key}) : super(key: key);

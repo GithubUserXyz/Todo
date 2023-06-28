@@ -4,8 +4,6 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
-import 'package:orange/main.dart';
-
 class MyTodoInfoPage extends StatefulWidget {
   const MyTodoInfoPage({super.key, required this.id});
   // 表示するtodoのid
