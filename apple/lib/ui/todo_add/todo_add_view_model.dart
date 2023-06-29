@@ -1,7 +1,6 @@
 import 'package:apple/model/entity/todo.dart';
 import 'package:apple/model/repository/todo_repository.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 
 class TodoAddViewModel extends ChangeNotifier {
   TodoAddViewModel(this._repository, [Todo? todo]) {

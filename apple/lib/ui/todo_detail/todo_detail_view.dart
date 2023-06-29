@@ -1,18 +1,14 @@
-import 'dart:developer';
-
 import 'package:apple/model/repository/todo_repository_api.dart';
 import 'package:apple/ui/todo_add/todo_add_view.dart';
 import 'package:apple/ui/todo_detail/todo_detail_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/entity/todo.dart';
-import 'package:apple/ui/todo_detail/todo_detail_view_model.dart';
-import 'package:apple/model/repository/todo_repository_api.dart';
 
+// ignore: must_be_immutable
 class TodoDetailView extends StatelessWidget {
-  TodoDetailView({required this.todo});
+  TodoDetailView({super.key, required this.todo});
   Todo todo;
 
   @override

@@ -17,7 +17,6 @@ named 'MyTodoAddPage'.
 
  * そのため、記述を追加した。
  */
-import 'package:orange/main.dart';
 
 class MyTodoAddPage extends StatefulWidget {
   const MyTodoAddPage({Key? key}) : super(key: key);
